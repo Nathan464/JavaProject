@@ -14,27 +14,87 @@ body {
     clear: both;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-li{
+li {
     list-style: none;
 }
 
-.publicHeader{
+.publicHeader {
     height: 48px;
     line-height: 48px;
     font-size: 14px;
-    background: linear-gradient(to bottom, #60acf0,#64a5df,#62a0dd,#5994d6,#4f8ace,#4880ca);
-    background: -webkit-linear-gradient(to bottom, #60acf0,#64a5df,#62a0dd,#5994d6,#4f8ace,#4880ca);
-    background: -moz-linear-gradient(to bottom, #60acf0,#64a5df,#62a0dd,#5994d6,#4f8ace,#4880ca);
+    background: linear-gradient(to bottom, #60acf0, #64a5df, #62a0dd, #5994d6, #4f8ace, #4880ca);
+    background: -webkit-linear-gradient(to bottom, #60acf0, #64a5df, #62a0dd, #5994d6, #4f8ace, #4880ca);
+    background: -moz-linear-gradient(to bottom, #60acf0, #64a5df, #62a0dd, #5994d6, #4f8ace, #4880ca);
 }
-.publicHeader h1{
+
+.publicHeader h1 {
     float: left;
     color: #fff;
     font-size: 22px;
     padding-left: 80px;
     text-shadow: 2px 1px #000;
     background: url("../images/buy.png") 30px center no-repeat;
+}
+
+.publicHeaderR {
+    float: right;
+    color: #fff;
+    margin-right: 50px;
+}
+
+.publicHeaderR p {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.publicHeaderR a {
+    width: 50px;
+    height: 28px;
+    display: inline-block;
+    border: 1px solid #679e43;
+    background: linear-gradient(to bottom, #baf076, #a2d866, #9cd055, #8dc838, #8bc93a);
+    line-height: 28px;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: bold;
+    color: #000;
+}
+
+.publicHeaderR a:hover, .publicHeaderR a:active {
+    border: 1px solid #192b02;
+    border-radius: 4px;
+    font-weight: bold;
+    background: linear-gradient(to bottom, #70b21c, #5c9613, #47740e, #3b6209, #2b4906);
+}
+
+.publicTime {
+    height: 28px;
+    line-height: 28px;
+    font-size: 12px;
+    background: linear-gradient(to bottom, #f5f9f8, #eef2fb, #e2ecf5, #e2ecf5, #e0edf6);
+    padding-left: 20px;
+    color: #808589;
+}
+
+#time {
+    float: left;
+    background: url("../images/time.png") 0 center no-repeat;
+    padding-left: 26px;
+}
+
+.publicTime a {
+    float: right;
+    margin-right: 50px;
+    color: #626367;
+}
+
+.publicMain {
+    border-top: 1px solid #c2ccd5;
+    display: flex;
+    display: -webkit-flex;
+    background: #fff;
 }
