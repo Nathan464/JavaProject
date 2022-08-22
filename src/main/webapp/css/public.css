@@ -30,3 +30,11 @@ li{
     background: -webkit-linear-gradient(to bottom, #60acf0,#64a5df,#62a0dd,#5994d6,#4f8ace,#4880ca);
     background: -moz-linear-gradient(to bottom, #60acf0,#64a5df,#62a0dd,#5994d6,#4f8ace,#4880ca);
 }
+.publicHeader h1{
+    float: left;
+    color: #fff;
+    font-size: 22px;
+    padding-left: 80px;
+    text-shadow: 2px 1px #000;
+    background: url("../images/buy.png") 30px center no-repeat;
+}
