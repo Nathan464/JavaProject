@@ -1,3 +1,3 @@
 # JavaProject
-This is a supermaket management system!
+This is a supermarket management system!
 Include Java/JavaScript/CSS/HTML
