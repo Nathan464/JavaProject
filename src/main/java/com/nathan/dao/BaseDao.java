@@ -7,23 +7,23 @@ import java.util.Properties;
 
 public class BaseDao {
     private static final String driver;
-    private static final String url;
     private static final String username;
     private static final String password;
+    private static final String url;
 
     static {
+        InputStream inputStream = BaseDao.class.getClassLoader().
+                getResourceAsStream("db.properties");
         Properties properties = new Properties();
-        InputStream inputStream =
-                BaseDao.class.getClassLoader().getResourceAsStream("db.properties");
         try {
             properties.load(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         driver = properties.getProperty("driver");
-        url = properties.getProperty("url");
         username = properties.getProperty("username");
         password = properties.getProperty("password");
+        url = properties.getProperty("url");
     }
 
     public static Connection getConnection() {
@@ -31,61 +31,77 @@ public class BaseDao {
         try {
             Class.forName(driver);
             connection = DriverManager.getConnection(url, username, password);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         return connection;
     }
 
-    public static ResultSet execute(Connection connection, String sql,
-                                    Object[] params, ResultSet resultSet,
-                                    PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement = connection.prepareStatement(sql);
-        for (int i = 0; i < params.length; i++) {
-            preparedStatement.setObject(i + 1, params[i]);
+    public static ResultSet execute(Connection connection, PreparedStatement preparedStatement,
+                                    String sql, Object[] params,
+                                    ResultSet resultSet) throws SQLException{
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            if (params!=null){
+                for (int i = 0; i < params.length; i++) {
+                    preparedStatement.setObject(i+1, params[i]);
+                }
+            }
+            resultSet = preparedStatement.executeQuery();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        resultSet = preparedStatement.executeQuery();
         return resultSet;
     }
 
-    public static int execute(Connection connection, String sql, Object[] params,
-                              PreparedStatement preparedStatement) throws SQLException {
-        preparedStatement = connection.prepareStatement(sql);
-        for (int i = 0; i < params.length; i++) {
-            preparedStatement.setObject(i + 1, params[i]);
+    public static int execute(Connection connection, PreparedStatement preparedStatement,
+                              String sql, Object[] params) throws SQLException{
+        int effectRows = 0;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            if (params!=null){
+                for (int i = 1; i < params.length; i++) {
+                    preparedStatement.setObject(i,params[i-1]);
+                }
+            }
+            effectRows = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return preparedStatement.executeUpdate();
+        return effectRows;
     }
 
-    public static boolean closeResource(Connection connection, PreparedStatement preparedStatement,
-                                        ResultSet resultSet) {
-        boolean flag = true;
-        // 关闭资源后将资源设置为空方便垃圾回收
-        if (resultSet != null) {
-            try {
+    public static boolean closeResources(Connection connection, PreparedStatement preparedStatement,
+                                         ResultSet resultSet) throws SQLException{
+        boolean flag=true;
+        //关闭结果集
+        if(resultSet!=null){
+            try{
                 resultSet.close();
-                resultSet = null;
-            } catch (SQLException e) {
-                e.printStackTrace();
+                resultSet = null;  //便于GC
+            }catch (Exception e){
                 flag = false;
+                e.printStackTrace();
             }
         }
-        if (preparedStatement != null) {
-            try {
+        //关闭sql执行对象
+        if(preparedStatement!=null){
+            try{
                 preparedStatement.close();
-                preparedStatement = null;
-            } catch (SQLException e) {
-                e.printStackTrace();
+                preparedStatement = null; //便于GC
+            }catch (Exception e){
                 flag = false;
+                e.printStackTrace();
             }
         }
-        if (connection != null) {
-            try {
+        //关闭数据库连接
+        if(connection!=null){
+            try{
                 connection.close();
                 connection = null;
-            } catch (SQLException e) {
-                e.printStackTrace();
+            }catch (Exception e){
                 flag = false;
+                e.printStackTrace();
             }
         }
         return flag;

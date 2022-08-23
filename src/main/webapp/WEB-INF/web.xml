@@ -9,6 +9,25 @@
 	 http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0"
          metadata-complete="true">
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>com.nathan.servlet.user.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login.do</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>com.nathan.servlet.user.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout.do</url-pattern>
+    </servlet-mapping>
     <filter>
         <filter-name>Encoding</filter-name>
         <filter-class>com.nathan.filter.EncodingFilter</filter-class>
@@ -23,6 +42,6 @@
     </filter>
     <filter-mapping>
         <filter-name>SysFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/jsp/*</url-pattern>
     </filter-mapping>
 </web-app>
