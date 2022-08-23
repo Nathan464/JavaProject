@@ -58,32 +58,32 @@ public class BillDaoImp implements BillDao {
         String sql = "select * from smbms_bill where 1=1";
         List<Object> list = new ArrayList<>();
         StringBuilder stringBuilder = new StringBuilder(sql);
-        if(queryProductionName!=null&&!queryProductionName.equals("")){
+        if (queryProductionName != null && !queryProductionName.equals("")) {
             stringBuilder.append(" and productName like ?");
-            list.add("%"+queryProductionName+"%");
+            list.add("%" + queryProductionName + "%");
         }
-        if(isPayment!=null){
+        if (isPayment != null) {
             stringBuilder.append(" and isPayment=?");
             list.add(isPayment);
         }
-        if(providerId!=null){
+        if (providerId != null) {
             stringBuilder.append(" and providerId=?");
             list.add(providerId);
         }
-        if(currentPageNo!=null&&pageSize!=null){
+        if (currentPageNo != null && pageSize != null) {
             stringBuilder.append(" order by creationDate desc limit ?,?");
-            list.add((currentPageNo-1)*pageSize);
+            list.add((currentPageNo - 1) * pageSize);
             list.add(pageSize);
         }
         Object[] params = list.toArray();
         Connection connection = BaseDao.getConnection();
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        if (connection!=null){
+        if (connection != null) {
             try {
-                resultSet = BaseDao.execute(connection,preparedStatement,
-                        stringBuilder.toString(),params,resultSet);
-                while(resultSet.next()){
+                resultSet = BaseDao.execute(connection, preparedStatement,
+                        stringBuilder.toString(), params, resultSet);
+                while (resultSet.next()) {
                     Bill bill = new Bill();
                     bill.setBillCode(resultSet.getString("billCode"));
                     bill.setCreationDate(resultSet.getTimestamp("creationDate"));
@@ -97,7 +97,7 @@ public class BillDaoImp implements BillDao {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             } finally {
-                BaseDao.closeResources(connection,preparedStatement,resultSet);
+                BaseDao.closeResources(connection, preparedStatement, resultSet);
             }
         }
         return billList;
@@ -105,7 +105,22 @@ public class BillDaoImp implements BillDao {
 
     @Override
     public int getBillCountByProviderId(Connection connection, String providerId) throws SQLException {
-        return 0;
+        int count = 0;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        if (connection!=null){
+            String sql = "select count(1) as billCount from smbms_bill where providerId = ?";
+            Object[] params = {providerId};
+            try {
+                resultSet = BaseDao.execute(connection,preparedStatement,sql,params,resultSet);
+                if (resultSet.next()) count = resultSet.getInt("billCount");
+            }catch (SQLException e){
+                e.printStackTrace();
+            }finally {
+                BaseDao.closeResources(null,preparedStatement,resultSet);
+            }
+        }
+        return count;
     }
 
     @Override
@@ -151,25 +166,60 @@ public class BillDaoImp implements BillDao {
                 bill.getModifyDate(), bill.getProductDesc(), bill.getId()};
         int count = 0;
         try {
-            count = BaseDao.execute(connection,preparedStatement,sql,params);
+            count = BaseDao.execute(connection, preparedStatement, sql, params);
             if (count > 0) {
-                flag=true;
+                flag = true;
             }
-        }catch (Exception e){
+        } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
-            BaseDao.closeResources(connection,preparedStatement,null);
+        } finally {
+            BaseDao.closeResources(connection, preparedStatement, null);
         }
         return flag;
     }
 
     @Override
     public boolean deleteBillById(Connection connection, int id) throws SQLException {
-        return false;
+        boolean flag =false;
+        String sql = "delete from smbms_bill where id=?";
+        Object[] params= {id};
+        PreparedStatement preparedStatement = null;
+        int count =0;
+        if (connection!=null){
+            try {
+                count = BaseDao.execute(connection,preparedStatement,sql,params);
+                if (count>0) flag =true;
+            }catch (SQLException e){
+                e.printStackTrace();
+            }finally {
+                BaseDao.closeResources(null,preparedStatement,null);
+            }
+        }
+        return flag;
     }
 
     @Override
     public boolean add(Connection connection, Bill bill) throws SQLException {
-        return false;
+        String sql = "insert into smbms_bill(billCode,productName,productDesc,productUnit,productCount," +
+                "totalPrice,isPayment,createdBy,creationDate,providerId) values(?,?,?,?,?,?,?,?,?,?)";
+        boolean flag = false;
+        PreparedStatement preparedStatement = null;
+        Object[] params = {bill.getBillCode(), bill.getProductName(), bill.getProductDesc(),
+                bill.getProductUnit(), bill.getProductCount(), bill.getTotalPrice(), bill.getIsPayment(),
+                bill.getCreatedBy(), bill.getCreationDate(), bill.getProviderId()};
+        int count = 0;
+        if (connection!=null){
+            try {
+                count = BaseDao.execute(connection,preparedStatement,sql,params);
+                if (count>0){
+                    flag=true;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                BaseDao.closeResources(null,preparedStatement,null);
+            }
+        }
+        return flag;
     }
 }
