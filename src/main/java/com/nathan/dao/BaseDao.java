@@ -48,7 +48,7 @@ public class BaseDao {
                 }
             }
             resultSet = preparedStatement.executeQuery();
-        }catch (Exception e){
+        }catch (SQLException e){
             e.printStackTrace();
         }
         return resultSet;
