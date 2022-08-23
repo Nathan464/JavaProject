@@ -119,8 +119,31 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public int getUserCount(Connection connection, String userName, int userCode) throws SQLException {
-        return 0;
+    public int getUserCount(Connection connection, String userName, int userRole) throws SQLException {
+        int count = 0;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        if (connection != null) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("select count(1) as count from smbms_user u,smbms_role r where u.userRole = r.id");
+            List<Object> list = new ArrayList<>();
+            if (!StringUtils.isNullOrEmpty(userName)) {
+                stringBuilder.append(" and u.userName like ?");
+                list.add("%" + userName + "%");
+            }
+            if (userRole > 0) {
+                stringBuilder.append(" and u.userRole = ?");
+                list.add(userRole);
+            }
+            Object[] params = list.toArray();
+            resultSet = BaseDao.execute(connection, preparedStatement, stringBuilder.toString(),
+                    params, resultSet);
+            if (resultSet.next()) {
+                count = resultSet.getInt("count");
+            }
+            BaseDao.closeResources(null, preparedStatement, resultSet);
+        }
+        return count;
     }
 
     @Override
@@ -131,27 +154,27 @@ public class UserDaoImp implements UserDao {
                 "phone,address,userRole,createdBy,creationDate,modifyBy," +
                 "modifyDate) values(?,?,?,?,?,?,?,?,?,?,?,?);";
         PreparedStatement preparedStatement = null;
-        if (connection!=null){
+        if (connection != null) {
             try {
                 preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setObject(1,user.getUserCode());
-                preparedStatement.setObject(2,user.getUserName());
-                preparedStatement.setObject(3,user.getUserPassword());
-                preparedStatement.setObject(4,user.getGender());
-                preparedStatement.setObject(5,user.getBirthday());
-                preparedStatement.setObject(6,user.getPhone());
-                preparedStatement.setObject(7,user.getAddress());
-                preparedStatement.setObject(8,user.getUserRole());
-                preparedStatement.setObject(9,user.getCreatedBy());
-                preparedStatement.setObject(10,user.getCreationDate());
-                preparedStatement.setObject(11,user.getModifyBy());
-                preparedStatement.setObject(12,user.getModifyDate());
+                preparedStatement.setObject(1, user.getUserCode());
+                preparedStatement.setObject(2, user.getUserName());
+                preparedStatement.setObject(3, user.getUserPassword());
+                preparedStatement.setObject(4, user.getGender());
+                preparedStatement.setObject(5, user.getBirthday());
+                preparedStatement.setObject(6, user.getPhone());
+                preparedStatement.setObject(7, user.getAddress());
+                preparedStatement.setObject(8, user.getUserRole());
+                preparedStatement.setObject(9, user.getCreatedBy());
+                preparedStatement.setObject(10, user.getCreationDate());
+                preparedStatement.setObject(11, user.getModifyBy());
+                preparedStatement.setObject(12, user.getModifyDate());
                 count = preparedStatement.executeUpdate();
-                if (count>0) flag=true;
-            }catch (SQLException e){
+                if (count > 0) flag = true;
+            } catch (SQLException e) {
                 e.printStackTrace();
-            }finally {
-                BaseDao.closeResources(null,preparedStatement,null);
+            } finally {
+                BaseDao.closeResources(null, preparedStatement, null);
             }
         }
         return flag;
@@ -203,12 +226,56 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User viewUser(Connection connection, int id) {
-        return null;
+    public User viewUser(Connection connection, int id) throws SQLException {
+        String sql = "select *,(select roleName as userRoleName from smbms_role " +
+                "where id=(select userRole from smbms_user where id=?)) " +
+                "as userRoleName from smbms_user where id=?;";
+        User user = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Object[] params = {id, id};
+        if (connection != null) {
+            try {
+                resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
+                if (resultSet.next()) {
+                    user = new User();
+                    user.setUserName(resultSet.getString("userName"));
+                    user.setUserCode(resultSet.getString("userCode"));
+                    user.setGender(resultSet.getInt("gender"));
+                    user.setBirthday(resultSet.getDate("birthday"));
+                    user.setPhone(resultSet.getString("phone"));
+                    user.setAddress(resultSet.getString("address"));
+                    user.setUserRoleName(resultSet.getString("userRoleName"));
+                    user.setUserRole(resultSet.getInt("userRole"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                BaseDao.closeResources(null, preparedStatement, resultSet);
+            }
+        }
+        return user;
     }
 
     @Override
-    public boolean modifyUser(Connection connection, User user) {
-        return false;
+    public boolean modifyUser(Connection connection, User user) throws SQLException {
+        int count = 0;
+        boolean flag = false;
+        String sql = "update smbms_user set modifyBy=?,modifyDate=?,userName=?,gender=?," +
+                "phone=?,address=?,userRole=? where id=?;";
+        PreparedStatement preparedStatement = null;
+        Object[] params = {user.getModifyBy(), user.getModifyDate(), user.getUserName(), user.getGender(),
+                user.getPhone(), user.getAddress(), user.getUserRole(), user.getId()};
+        if (connection != null) {
+            try {
+                count = BaseDao.execute(connection, preparedStatement, sql, params);
+                if (count > 0) flag = true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                BaseDao.closeResources(null, preparedStatement, null);
+            }
+        }
+        return flag;
     }
 }

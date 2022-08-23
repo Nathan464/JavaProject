@@ -14,7 +14,7 @@ public interface UserDao {
     List<User> getUserList(Connection connection, String userName, int userRole,
                            int currentPageNo, int pageSize) throws SQLException;
 
-    int getUserCount(Connection connection, String userName, int userCode) throws SQLException;
+    int getUserCount(Connection connection, String userName, int userRole) throws SQLException;
 
     boolean addUser(Connection connection, User user) throws SQLException;
 
