@@ -149,7 +149,7 @@ public class UserDaoImp implements UserDao {
     @Override
     public boolean addUser(Connection connection, User user) throws SQLException {
         boolean flag = false;
-        int count = 0;
+        int count;
         String sql = "insert into smbms_user(userCode,userName,userPassword,gender,birthday," +
                 "phone,address,userRole,createdBy,creationDate,modifyBy," +
                 "modifyDate) values(?,?,?,?,?,?,?,?,?,?,?,?);";
@@ -202,7 +202,7 @@ public class UserDaoImp implements UserDao {
                 BaseDao.closeResources(connection, preparedStatement, resultSet);
             }
         }
-        return false;
+        return flag;
     }
 
     @Override
@@ -259,7 +259,7 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public boolean modifyUser(Connection connection, User user) throws SQLException {
-        int count = 0;
+        int count;
         boolean flag = false;
         String sql = "update smbms_user set modifyBy=?,modifyDate=?,userName=?,gender=?," +
                 "phone=?,address=?,userRole=? where id=?;";

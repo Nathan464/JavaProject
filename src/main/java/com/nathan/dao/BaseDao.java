@@ -27,7 +27,7 @@ public class BaseDao {
     }
 
     public static Connection getConnection() {
-        Connection connection = null;
+        Connection connection;
         try {
             Class.forName(driver);
             connection = DriverManager.getConnection(url, username, password);
@@ -56,7 +56,7 @@ public class BaseDao {
 
     public static int execute(Connection connection, PreparedStatement preparedStatement,
                               String sql, Object[] params) throws SQLException{
-        int effectRows = 0;
+        int effectRows;
         try {
             preparedStatement = connection.prepareStatement(sql);
             if (params!=null){
@@ -71,16 +71,14 @@ public class BaseDao {
         return effectRows;
     }
 
-    public static boolean closeResources(Connection connection, PreparedStatement preparedStatement,
-                                         ResultSet resultSet) throws SQLException{
-        boolean flag=true;
+    public static void closeResources(Connection connection, PreparedStatement preparedStatement,
+                                      ResultSet resultSet) throws SQLException{
         //关闭结果集
         if(resultSet!=null){
             try{
                 resultSet.close();
                 resultSet = null;  //便于GC
             }catch (Exception e){
-                flag = false;
                 e.printStackTrace();
             }
         }
@@ -90,7 +88,6 @@ public class BaseDao {
                 preparedStatement.close();
                 preparedStatement = null; //便于GC
             }catch (Exception e){
-                flag = false;
                 e.printStackTrace();
             }
         }
@@ -100,10 +97,8 @@ public class BaseDao {
                 connection.close();
                 connection = null;
             }catch (Exception e){
-                flag = false;
                 e.printStackTrace();
             }
         }
-        return flag;
     }
 }
