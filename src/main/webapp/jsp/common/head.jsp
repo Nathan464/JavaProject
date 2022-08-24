@@ -15,13 +15,13 @@
     <header class="publicHeader">
         <h1>超市订单管理系统</h1>
         <div class="publicHeaderR">
-            <p><span>下午好！</span><span style="color: #fff21b"> ${userSession.userName }</span> , 欢迎你！</p>
+            <p><span>下午好！</span><span style="color: #fff21b"> ${user_session.userName }</span> , 欢迎你！</p>
             <a href="${pageContext.request.contextPath }/jsp/logout.do">退出</a>
         </div>
     </header>
 <!--时间-->
     <section class="publicTime">
-        <span id="time">2015年1月1日 11:11  星期一</span>
+        <span id="time">2015-1-1 11:11  Mon</span>
         <a href="#">温馨提示：为了能正常浏览，请使用高版本浏览器！（IE10+）</a>
     </section>
  <!--主体内容-->
@@ -40,6 +40,3 @@
      </div>
      <input type="hidden" id="path" name="path" value="${pageContext.request.contextPath }"/>
      <input type="hidden" id="referer" name="referer" value="<%=request.getHeader("Referer")%>"/>
-</section>
-</body>
-</html>
