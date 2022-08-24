@@ -7,7 +7,7 @@
     <!--注册编码过滤器-->
   <filter>
       <filter-name>EncodingFilter</filter-name>
-      <filter-class>cn.app.filter.EncodingFilter</filter-class>
+      <filter-class>com.nathan.filter.EncodingFilter</filter-class>
   </filter>
     <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
@@ -72,7 +72,7 @@
     <!--注册bill servlet-->
     <servlet>
         <servlet-name>bill</servlet-name>
-        <servlet-class>com.nathan.servlet.bill.BillServelet</servlet-class>
+        <servlet-class>com.nathan.servlet.bill.BillServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>bill</servlet-name>

@@ -17,6 +17,15 @@ public class Bill {
     private Integer modifyBy;
     private Date modifyDate;
     private Integer providerId;
+    private  String providerName;
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
 
     public Integer getId() {
         return id;
