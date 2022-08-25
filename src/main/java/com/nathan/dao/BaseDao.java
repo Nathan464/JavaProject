@@ -12,18 +12,11 @@ public class BaseDao {
     private static final String url;
 
     static {
-        InputStream inputStream = BaseDao.class.getClassLoader().
-                getResourceAsStream("db.properties");
-        Properties properties = new Properties();
-        try {
-            properties.load(inputStream);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        driver = properties.getProperty("driver");
-        username = properties.getProperty("username");
-        password = properties.getProperty("password");
-        url = properties.getProperty("url");
+//
+        driver = "com.mysql.cj.jdbc.Driver";
+        url = "jdbc:mysql://localhost:3306/smbms?useSSL=true&useUnicode=true&characterEncoding=UTF-8";
+        username = "root";
+        password = "123456";
     }
 
     public static Connection getConnection() {

@@ -16,8 +16,8 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public User login(String userCode, String passWord) throws SQLException {
-        return userDao.getLoginUser(userCode,passWord);
+    public User login(String userCode, String password) throws SQLException {
+        return userDao.getLoginUser(userCode,password);
     }
 
     @Override

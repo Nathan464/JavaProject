@@ -3,20 +3,35 @@ package com.nathan.pojo;
 import java.util.Date;
 
 public class User {
+    @field("id")
     private Integer id;
+    @field("用户编码")
     private String userCode;
+    @field("用户名称")
     private String userName;
+    @field("用户密码")
     private String userPassword;
+    @field("性别")
     private Integer gender;
+    @field("出生日期")
     private Date birthday;
+    @field("电话")
     private String phone;
+    @field("地址")
     private String address;
+    @field("用户角色")
     private Integer userRole;
+    @field("创建者")
     private Integer createdBy;
+    @field("创建时间")
     private Date creationDate;
+    @field("更新者")
     private Integer modifyBy;
+    @field("更新时间")
     private Date modifyDate;
+    @field("年龄")
     private Integer age;
+    @field("用户角色名称")
     private String userRoleName;
 
     public Integer getId() {
@@ -138,4 +153,8 @@ public class User {
     public void setUserRoleName(String userRoleName) {
         this.userRoleName = userRoleName;
     }
+}
+
+@interface field {
+    String value() default "";
 }

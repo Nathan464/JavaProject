@@ -3,18 +3,41 @@ package com.nathan.pojo;
 import java.util.Date;
 
 public class Provider {
+    @field("id")
     private Integer id;
+
+    @field("供应商编码")
     private String proCode;
+
+    @field("供应商名称")
     private String proName;
+
+    @field("供应商描述")
     private String proDesc;
+
+    @field("供应商联系人")
     private String proContact;
+
+    @field("供应商电话")
     private String proPhone;
+
+    @field("供应商地址")
     private String proAddress;
+
+    @field("供应商传真")
     private String proFax;
+
+    @field("创建者")
     private Integer createdBy;
+
+    @field("创建时间")
     private Date creationDate;
-    private Date modifyDate;
+
+    @field("更新者")
     private Integer modifyBy;
+
+    @field("更新时间")
+    private Date modifyDate;
 
     public Integer getId() {
         return id;

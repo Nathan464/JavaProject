@@ -4,20 +4,34 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Bill {
+    @field("id")
     private Integer id;
+    @field("账单编码")
     private String billCode;
+    @field("商品名称")
     private String productName;
+    @field("商品描述")
     private String productDesc;
+    @field("商品单位")
     private String productUnit;
+    @field("商品数量")
     private BigDecimal productCount;
+    @field("总金额")
     private BigDecimal totalPrice;
+    @field("是否支付")
     private Integer isPayment;
+    @field("创建者")
     private Integer createdBy;
+    @field("创建时间")
     private Date creationDate;
+    @field("更新者")
     private Integer modifyBy;
+    @field("更新时间")
     private Date modifyDate;
+    @field("供应商ID")
     private Integer providerId;
-    private  String providerName;
+    @field("供应商名称")
+    private String providerName;
 
     public String getProviderName() {
         return providerName;

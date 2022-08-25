@@ -3,14 +3,26 @@ package com.nathan.pojo;
 import java.util.Date;
 
 public class Role {
+    @field("id")
     private Integer id;
-    private String roleCode;
-    private String roleName;
-    private Integer createdBy;
-    private Date creationDate;
-    private Integer modifyBy;
-    private Date modifyDate;
 
+    @field("角色编码")
+    private String roleCode;
+
+    @field("角色名称")
+    private String roleName;
+
+    @field("创建者")
+    private Integer createdBy;
+
+    @field("创建时间")
+    private Date creationDate;
+
+    @field("更新者")
+    private Integer modifyBy;
+
+    @field("更新时间")
+    private Date modifyDate;
 
     public Integer getId() {
         return id;

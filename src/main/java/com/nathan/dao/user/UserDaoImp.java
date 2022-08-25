@@ -21,35 +21,30 @@ public class UserDaoImp implements UserDao {
         User user = null;
         Object[] params = {userCode, password};
         if (connection != null) {
-            try {
-                resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
-                if (resultSet != null) {
-                    try {
-                        if (resultSet.next()) {
-                            user = new User();
-                            user.setId(resultSet.getInt("id"));
-                            user.setUserCode(resultSet.getString("userCode"));
-                            user.setUserName(resultSet.getString("userName"));
-                            user.setUserPassword(resultSet.getString("userPassword"));
-                            user.setGender(resultSet.getInt("gender"));
-                            user.setBirthday(resultSet.getDate("birthday"));
-                            user.setPhone(resultSet.getString("phone"));
-                            user.setAddress(resultSet.getString("address"));
-                            user.setUserRole(resultSet.getInt("userRole"));
-                            user.setCreatedBy(resultSet.getInt("createdBy"));
-                            user.setCreationDate(resultSet.getTimestamp("creationDate"));
-                            user.setModifyBy(resultSet.getInt("modifyBy"));
-                            user.setModifyDate(resultSet.getTimestamp("modifyDate"));
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+            resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
+            if (resultSet != null) {
+                try {
+                    if (resultSet.next()) {
+                        user = new User();
+                        user.setId(resultSet.getInt("id"));
+                        user.setUserCode(resultSet.getString("userCode"));
+                        user.setUserName(resultSet.getString("userName"));
+                        user.setUserPassword(resultSet.getString("userPassword"));
+                        user.setGender(resultSet.getInt("gender"));
+                        user.setBirthday(resultSet.getDate("birthday"));
+                        user.setPhone(resultSet.getString("phone"));
+                        user.setAddress(resultSet.getString("address"));
+                        user.setUserRole(resultSet.getInt("userRole"));
+                        user.setCreatedBy(resultSet.getInt("createdBy"));
+                        user.setCreationDate(resultSet.getTimestamp("creationDate"));
+                        user.setModifyBy(resultSet.getInt("modifyBy"));
+                        user.setModifyDate(resultSet.getTimestamp("modifyDate"));
                     }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                BaseDao.closeResources(connection, preparedStatement, resultSet);
             }
+            BaseDao.closeResources(connection, preparedStatement, resultSet);
         }
         return user;
     }
