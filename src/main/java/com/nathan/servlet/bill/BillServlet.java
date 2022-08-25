@@ -51,14 +51,14 @@ public class BillServlet extends HttpServlet {
                         throw new RuntimeException(e);
                     }
                     break;
-                case "modifySave":
+                case "modifysave":
                     try {
                         this.modifySave(req, resp);
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
                     break;
-                case "deleteBill":
+                case "delbill":
                     try {
                         this.deleteBill(req, resp);
                     } catch (SQLException e) {
@@ -72,7 +72,7 @@ public class BillServlet extends HttpServlet {
                         throw new RuntimeException(e);
                     }
                     break;
-                case "getProviderList":
+                case "getproviderlist":
                     try {
                         this.getProviderListServlet(req, resp);
                     } catch (SQLException e) {
