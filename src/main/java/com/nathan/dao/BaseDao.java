@@ -53,7 +53,7 @@ public class BaseDao {
         try {
             preparedStatement = connection.prepareStatement(sql);
             if (params!=null){
-                for (int i = 1; i < params.length; i++) {
+                for (int i = 1; i <= params.length; i++) {
                     preparedStatement.setObject(i,params[i-1]);
                 }
             }
@@ -70,7 +70,6 @@ public class BaseDao {
         if(resultSet!=null){
             try{
                 resultSet.close();
-                resultSet = null;  //便于GC
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -79,7 +78,6 @@ public class BaseDao {
         if(preparedStatement!=null){
             try{
                 preparedStatement.close();
-                preparedStatement = null; //便于GC
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -88,7 +86,6 @@ public class BaseDao {
         if(connection!=null){
             try{
                 connection.close();
-                connection = null;
             }catch (Exception e){
                 e.printStackTrace();
             }

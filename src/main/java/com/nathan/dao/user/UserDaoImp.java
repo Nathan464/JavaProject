@@ -50,10 +50,9 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public boolean modifyPassword(int id, String newPassword) throws SQLException {
+    public boolean modifyPassword(Connection connection, int id, String newPassword) throws SQLException {
         String sql = "update smbms_user set userPassword=? where id=?";
         boolean flag = false;
-        Connection connection = BaseDao.getConnection();
         PreparedStatement preparedStatement = null;
         Object[] params = {newPassword, id};
         if (connection != null) {

@@ -80,7 +80,7 @@ public class ProviderServiceImp implements ProviderService {
     @Override
     public int deleteProviderById(String providerId) throws SQLException {
         Connection connection = null;
-        int billCount = -1;
+        int billCount;
         try {
             connection = BaseDao.getConnection();
             connection.setAutoCommit(false);
@@ -104,14 +104,13 @@ public class ProviderServiceImp implements ProviderService {
 
     @Override
     public Provider getProviderById(String providerId) throws SQLException {
-        Provider provider;
+        Provider provider = null;
         Connection connection = null;
         try {
             connection = BaseDao.getConnection();
             provider = providerDao.getProviderById(connection, providerId);
         } catch (SQLException exception) {
             exception.printStackTrace();
-            provider = null;
         } finally {
             BaseDao.closeResources(connection, null, null);
         }

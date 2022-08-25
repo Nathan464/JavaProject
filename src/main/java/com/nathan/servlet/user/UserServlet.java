@@ -1,6 +1,7 @@
 package com.nathan.servlet.user;
 
 import com.alibaba.fastjson.JSONArray;
+import com.nathan.dao.BaseDao;
 import com.nathan.pojo.Role;
 import com.nathan.pojo.User;
 import com.nathan.service.user.UserService;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -104,12 +106,13 @@ public class UserServlet extends HttpServlet {
     public void updatePassword(HttpServletRequest request, HttpServletResponse response) throws SQLException {
         String newPassword = request.getParameter("newpassword");
         Object object = request.getSession().getAttribute(Constant.USER_SESSION);
+        Connection connection = BaseDao.getConnection();
         int id;
         boolean flag;
         if (object != null && newPassword != null) {
             id = ((User) object).getId();
             UserService userService = new UserServiceImp();
-            flag = userService.modifyPassword(id, newPassword);
+            flag = userService.modifyPassword(connection, id, newPassword);
             if (flag) {
                 request.getSession().setAttribute(Constant.MESSAGE, "Success");
                 request.getSession().setAttribute(Constant.USER_SESSION, null);
@@ -172,9 +175,9 @@ public class UserServlet extends HttpServlet {
         }
         int totalCount = userService.getUserCount(queryUserName, queryUserRole);
         PageSupport pageSupport = new PageSupport();
+        pageSupport.setPageSize(pageSize);
         pageSupport.setTotalCount(totalCount);
         pageSupport.setCurrentPageNo(currentPageNo);
-        pageSupport.setPageSize(pageSize);
         int pageTotalCount = pageSupport.getTotalPageCount();
         if (currentPageNo < 1) currentPageNo = 1;
         else if (currentPageNo > pageTotalCount) currentPageNo = pageTotalCount;

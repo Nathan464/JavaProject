@@ -1,6 +1,7 @@
 package com.nathan.servlet.bill;
 
 import com.alibaba.fastjson.JSONArray;
+import com.mysql.cj.util.StringUtils;
 import com.nathan.pojo.Bill;
 import com.nathan.pojo.Provider;
 import com.nathan.pojo.User;
@@ -253,13 +254,12 @@ public class BillServlet extends HttpServlet {
         int totalPageCount;
         int totalCount;
         int pageSize = Constant.PAGE_SIZE;
-        if (queryProductName == null) queryProductName = "";
-        if (queryProviderId != null) {
-            providerId = Integer.valueOf(queryProviderId);
-            if (providerId == 0) providerId = null;
+        if (StringUtils.isNullOrEmpty(queryProductName)) queryProductName = "";
+        if (!StringUtils.isNullOrEmpty(queryProviderId)) {
+            providerId = Integer.parseInt(queryProviderId);
         }
         if (queryIsPayment != null) {
-            isPayment = Integer.valueOf(queryIsPayment);
+            isPayment = Integer.parseInt(queryIsPayment);
             if (isPayment == 0) isPayment = null;
         }
         if (pageIndex != null) currentPageNo = Integer.parseInt(pageIndex);
@@ -273,18 +273,20 @@ public class BillServlet extends HttpServlet {
         if (currentPageNo > totalPageCount) currentPageNo = totalPageCount;
         else if (currentPageNo <= 0) currentPageNo = 1;
 
-        ProviderService providerServiceOne = new ProviderServiceImp();
         billList = billService.getBillListByCondition(queryProductName, isPayment, providerId,
                 currentPageNo, pageSize);
-        for (Bill bill : billList) {
-            bill.setProductName(providerServiceOne.getProviderById("" + bill.getProviderId()).getProName());
+        for (Bill bill:billList){
+            for (Provider provider:providerList){
+                if (provider.getId().equals(bill.getProviderId())){
+                    bill.setProviderName(provider.getProName());
+                }
+            }
         }
         try {
             request.setAttribute("billList", billList);
             request.setAttribute("totalCount", totalCount);
             request.setAttribute("totalPageCount", totalPageCount);
             request.setAttribute("currentPageNo", currentPageNo);
-            request.getSession().setAttribute("providerList", providerList);
             request.getRequestDispatcher("billlist.jsp").forward(request, response);
         } catch (ServletException | IOException e) {
             throw new RuntimeException(e);

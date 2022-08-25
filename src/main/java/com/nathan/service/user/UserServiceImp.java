@@ -21,8 +21,8 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public boolean modifyPassword(int id, String newPassword) throws SQLException {
-        return userDao.modifyPassword(id,newPassword);
+    public boolean modifyPassword(Connection connection, int id, String newPassword) throws SQLException {
+        return userDao.modifyPassword(connection,id,newPassword);
     }
 
     @Override

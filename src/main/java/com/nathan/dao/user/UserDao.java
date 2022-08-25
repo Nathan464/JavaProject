@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserDao {
     User getLoginUser(String userCode, String password) throws SQLException;
 
-    boolean modifyPassword(int id, String newPassword) throws SQLException;
+    boolean modifyPassword(Connection connection, int id, String newPassword) throws SQLException;
 
     List<User> getUserList(Connection connection, String userName, int userRole,
                            int currentPageNo, int pageSize) throws SQLException;

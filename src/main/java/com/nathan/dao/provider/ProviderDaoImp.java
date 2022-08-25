@@ -133,29 +133,23 @@ public class ProviderDaoImp implements ProviderDao {
         if (connection != null) {
             String sql = "select * from smbms_provider where id=?";
             Object[] params = {id};
-            try {
-                resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
-                if (resultSet.next()) {
-                    provider = new Provider();
-                    provider.setId(resultSet.getInt("id"));
-                    provider.setProCode(resultSet.getString("proCode"));
-                    provider.setProName(resultSet.getString("proName"));
-                    provider.setProDesc(resultSet.getString("proDesc"));
-                    provider.setProContact(resultSet.getString("proContact"));
-                    provider.setProPhone(resultSet.getString("proPhone"));
-                    provider.setProAddress(resultSet.getString("proAddress"));
-                    provider.setProFax(resultSet.getString("proFax"));
-                    provider.setCreatedBy(resultSet.getInt("createdBy"));
-                    provider.setCreationDate(resultSet.getTimestamp("creationDate"));
-                    provider.setModifyBy(resultSet.getInt("modifyBy"));
-                    provider.setModifyDate(resultSet.getTimestamp("modifyDate"));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                BaseDao.closeResources(null, preparedStatement, resultSet);
+            resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
+            if (resultSet.next()) {
+                provider = new Provider();
+                provider.setId(resultSet.getInt("id"));
+                provider.setProCode(resultSet.getString("proCode"));
+                provider.setProName(resultSet.getString("proName"));
+                provider.setProDesc(resultSet.getString("proDesc"));
+                provider.setProContact(resultSet.getString("proContact"));
+                provider.setProPhone(resultSet.getString("proPhone"));
+                provider.setProAddress(resultSet.getString("proAddress"));
+                provider.setProFax(resultSet.getString("proFax"));
+                provider.setCreatedBy(resultSet.getInt("createdBy"));
+                provider.setCreationDate(resultSet.getTimestamp("creationDate"));
+                provider.setModifyBy(resultSet.getInt("modifyBy"));
+                provider.setModifyDate(resultSet.getTimestamp("modifyDate"));
             }
-
+            BaseDao.closeResources(null, preparedStatement, resultSet);
         }
         return provider;
     }
@@ -170,8 +164,8 @@ public class ProviderDaoImp implements ProviderDao {
             Object[] params = {provider.getProName(), provider.getProDesc(), provider.getProContact(),
                     provider.getProPhone(), provider.getProAddress(), provider.getProFax(),
                     provider.getModifyBy(), provider.getModifyDate(), provider.getId()};
-            count = BaseDao.execute(connection,preparedStatement,sql,params);
-            BaseDao.closeResources(null,preparedStatement,null);
+            count = BaseDao.execute(connection, preparedStatement, sql, params);
+            BaseDao.closeResources(null, preparedStatement, null);
         }
         return count;
     }

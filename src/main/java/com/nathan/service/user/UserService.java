@@ -2,13 +2,14 @@ package com.nathan.service.user;
 
 import com.nathan.pojo.User;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public interface UserService {
     User login(String userCode, String passWord) throws SQLException;
 
-    boolean modifyPassword(int id, String newPassword) throws SQLException;
+    boolean modifyPassword(Connection connection,int id, String newPassword) throws SQLException;
 
     List<User> getUserList(String userName, int userRole, int currentPageNo,
                            int pageSize) throws SQLException;

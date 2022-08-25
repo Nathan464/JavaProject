@@ -158,22 +158,19 @@ public class BillDaoImp implements BillDao {
     @Override
     public boolean updateBill(Connection connection, Bill bill) throws SQLException {
         boolean flag = false;
-        String sql = "update smbms_bill set productName=?,productUnit=?,productCount=?,totalPrice=?," +
-                "providerId=?,isPayment=?,modifyBy=?,modifyDate=?,productDesc=? where id=?";
         PreparedStatement preparedStatement = null;
-        Object[] params = {bill.getProductName(), bill.getProductUnit(), bill.getProductCount(),
-                bill.getTotalPrice(), bill.getProviderId(), bill.getIsPayment(), bill.getModifyBy(),
-                bill.getModifyDate(), bill.getProductDesc(), bill.getId()};
-        int count = 0;
-        try {
+        int count;
+        if (connection!=null){
+            String sql = "update smbms_bill set productName=?,productUnit=?,productCount=?,totalPrice=?," +
+                    "providerId=?,isPayment=?,modifyBy=?,modifyDate=?,productDesc=? where id=?";
+            Object[] params = {bill.getProductName(), bill.getProductUnit(), bill.getProductCount(),
+                    bill.getTotalPrice(), bill.getProviderId(), bill.getIsPayment(), bill.getModifyBy(),
+                    bill.getModifyDate(), bill.getProductDesc(), bill.getId()};
             count = BaseDao.execute(connection, preparedStatement, sql, params);
             if (count > 0) {
                 flag = true;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            BaseDao.closeResources(connection, preparedStatement, null);
+            BaseDao.closeResources(null, preparedStatement, null);
         }
         return flag;
     }
@@ -184,7 +181,7 @@ public class BillDaoImp implements BillDao {
         String sql = "delete from smbms_bill where id=?";
         Object[] params= {id};
         PreparedStatement preparedStatement = null;
-        int count =0;
+        int count;
         if (connection!=null){
             try {
                 count = BaseDao.execute(connection,preparedStatement,sql,params);
@@ -207,7 +204,7 @@ public class BillDaoImp implements BillDao {
         Object[] params = {bill.getBillCode(), bill.getProductName(), bill.getProductDesc(),
                 bill.getProductUnit(), bill.getProductCount(), bill.getTotalPrice(), bill.getIsPayment(),
                 bill.getCreatedBy(), bill.getCreationDate(), bill.getProviderId()};
-        int count = 0;
+        int count;
         if (connection!=null){
             try {
                 count = BaseDao.execute(connection,preparedStatement,sql,params);
