@@ -44,7 +44,7 @@ $(function(){
 	newpassword.on("focus",function(){
 		validateTip(newpassword.next(),{"color":"#666666"},"* 密码长度必须是大于6小于20",false);
 	}).on("blur",function(){
-		if(newpassword.val() != null && newpassword.val().length > 6
+		if(newpassword.val() != null && newpassword.val().length > 5
 				&& newpassword.val().length < 20 ){
 			validateTip(newpassword.next(),{"color":"green"},imgYes,true);
 		}else{
@@ -56,7 +56,7 @@ $(function(){
 	rnewpassword.on("focus",function(){
 		validateTip(rnewpassword.next(),{"color":"#666666"},"* 请输入与上面一致的密码",false);
 	}).on("blur",function(){
-		if(rnewpassword.val() != null && rnewpassword.val().length > 6
+		if(rnewpassword.val() != null && rnewpassword.val().length > 5
 				&& rnewpassword.val().length < 20 && newpassword.val() == rnewpassword.val()){
 			validateTip(rnewpassword.next(),{"color":"green"},imgYes,true);
 		}else{
@@ -69,8 +69,10 @@ $(function(){
 		oldpassword.blur();
 		newpassword.blur();
 		rnewpassword.blur();
-		if(oldpassword.attr("validateStatus") == "true" 
-			&& newpassword.attr("validateStatus") == "true"
+        //oldpassword.attr("validateStatus") == "true"
+        //&&
+		if(oldpassword.attr("validateStatus") == "true"
+            && newpassword.attr("validateStatus") == "true"
 			&& rnewpassword.attr("validateStatus") == "true"){
 			if(confirm("确定要修改密码？")){
 				$("#userForm").submit();
