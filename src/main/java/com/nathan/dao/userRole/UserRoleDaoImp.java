@@ -21,7 +21,7 @@ public class UserRoleDaoImp implements UserRoleDao{
         if (connection!=null){
             preparedStatement = connection.prepareStatement(sql);
             try {
-                resultSet = BaseDao.execute(connection,preparedStatement,sql,null,resultSet);
+                resultSet = BaseDao.execute(connection,preparedStatement,sql,null,null);
                 while (resultSet.next()){
                     role = new Role();
                     role.setId(resultSet.getInt("id"));

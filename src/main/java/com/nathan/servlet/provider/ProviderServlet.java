@@ -146,7 +146,7 @@ public class ProviderServlet extends HttpServlet {
         provider.setCreatedBy(((User) request.getSession().getAttribute(Constant.USER_SESSION)).getId());
         provider.setCreationDate(new Date());
         ProviderService providerService = new ProviderServiceImp();
-        boolean flag = false;
+        boolean flag;
         flag = providerService.add(provider);
         if (flag) {
             response.sendRedirect(request.getContextPath() + "/jsp/provider.do?method=query");
@@ -190,7 +190,7 @@ public class ProviderServlet extends HttpServlet {
         provider.setModifyBy(((User) request.getSession().getAttribute(Constant.USER_SESSION)).getId());
         provider.setModifyDate(new Date());
         ProviderService providerService = new ProviderServiceImp();
-        boolean flag = false;
+        boolean flag;
         flag = providerService.modify(provider);
         if (flag) {
             response.sendRedirect(request.getContextPath() + "/jsp/provider.do?method=query");

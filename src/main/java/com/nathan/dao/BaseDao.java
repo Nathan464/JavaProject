@@ -1,9 +1,6 @@
 package com.nathan.dao;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
-import java.util.Properties;
 
 public class BaseDao {
     private static final String driver;

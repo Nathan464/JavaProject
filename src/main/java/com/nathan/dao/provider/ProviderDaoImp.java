@@ -5,7 +5,6 @@ import com.nathan.dao.BaseDao;
 import com.nathan.pojo.Provider;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ public class ProviderDaoImp implements ProviderDao {
     @Override
     public int add(Connection connection, Provider provider) throws SQLException {
         int count = 0;
-        PreparedStatement preparedStatement = null;
         if (connection != null) {
             String sql = "insert into smbms_provider (proCode,proName,proDesc," +
                     "proContact,proPhone,proAddress,proFax,createdBy,creationDate) " +
@@ -23,8 +21,8 @@ public class ProviderDaoImp implements ProviderDao {
             Object[] params = {provider.getProCode(), provider.getProName(), provider.getProDesc(),
                     provider.getProContact(), provider.getProPhone(), provider.getProAddress(),
                     provider.getProFax(), provider.getCreatedBy(), provider.getCreationDate()};
-            count = BaseDao.execute(connection, preparedStatement, sql, params);
-            BaseDao.closeResources(null, preparedStatement, null);
+            count = BaseDao.execute(connection, null, sql, params);
+            BaseDao.closeResources(null, null, null);
         }
         return count;
     }
@@ -32,7 +30,6 @@ public class ProviderDaoImp implements ProviderDao {
     @Override
     public List<Provider> getProviderList(Connection connection, String proName, String proCode,
                                           Integer currentPageNo, Integer pageSize) throws SQLException {
-        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         List<Provider> providerList = new ArrayList<>();
         if (connection != null) {
@@ -55,8 +52,8 @@ public class ProviderDaoImp implements ProviderDao {
             }
             Object[] params = list.toArray();
             try {
-                resultSet = BaseDao.execute(connection, preparedStatement, stringBuilder.toString(),
-                        params, resultSet);
+                resultSet = BaseDao.execute(connection, null, stringBuilder.toString(),
+                        params, null);
                 while (resultSet.next()) {
                     Provider provider = new Provider();
                     provider.setId(resultSet.getInt("id"));
@@ -73,7 +70,7 @@ public class ProviderDaoImp implements ProviderDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                BaseDao.closeResources(null, preparedStatement, resultSet);
+                BaseDao.closeResources(null, null, resultSet);
             }
         }
         return providerList;
@@ -82,7 +79,6 @@ public class ProviderDaoImp implements ProviderDao {
     @Override
     public int getProviderCount(Connection connection, String proName, String proCode) throws SQLException {
         int count = 0;
-        PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         if (connection != null) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -98,15 +94,15 @@ public class ProviderDaoImp implements ProviderDao {
             }
             Object[] params = list.toArray();
             try {
-                resultSet = BaseDao.execute(connection, preparedStatement,
-                        stringBuilder.toString(), params, resultSet);
+                resultSet = BaseDao.execute(connection,null,
+                        stringBuilder.toString(), params, null);
                 if (resultSet.next()) {
                     count = resultSet.getInt("count");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                BaseDao.closeResources(null, preparedStatement, resultSet);
+                BaseDao.closeResources(null, null, resultSet);
             }
         }
         return count;
@@ -114,26 +110,24 @@ public class ProviderDaoImp implements ProviderDao {
 
     @Override
     public int deleteProviderById(Connection connection, String id) throws SQLException {
-        PreparedStatement preparedStatement = null;
         int count = 0;
         if (connection != null) {
             String sql = "delete from smbms_provider where id=?";
             Object[] params = {id};
-            count = BaseDao.execute(connection, preparedStatement, sql, params);
-            BaseDao.closeResources(null, preparedStatement, null);
+            count = BaseDao.execute(connection, null, sql, params);
+            BaseDao.closeResources(null, null, null);
         }
         return count;
     }
 
     @Override
     public Provider getProviderById(Connection connection, String id) throws SQLException {
-        PreparedStatement preparedStatement = null;
         Provider provider = null;
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         if (connection != null) {
             String sql = "select * from smbms_provider where id=?";
             Object[] params = {id};
-            resultSet = BaseDao.execute(connection, preparedStatement, sql, params, resultSet);
+            resultSet = BaseDao.execute(connection, null, sql, params, null);
             if (resultSet.next()) {
                 provider = new Provider();
                 provider.setId(resultSet.getInt("id"));
@@ -149,7 +143,7 @@ public class ProviderDaoImp implements ProviderDao {
                 provider.setModifyBy(resultSet.getInt("modifyBy"));
                 provider.setModifyDate(resultSet.getTimestamp("modifyDate"));
             }
-            BaseDao.closeResources(null, preparedStatement, resultSet);
+            BaseDao.closeResources(null, null, resultSet);
         }
         return provider;
     }
@@ -157,15 +151,14 @@ public class ProviderDaoImp implements ProviderDao {
     @Override
     public int modify(Connection connection, Provider provider) throws SQLException {
         int count = 0;
-        PreparedStatement preparedStatement = null;
         if (connection != null) {
             String sql = "update smbms_provider set proName=?,proDesc=?,proContact=?," +
                     "proPhone=?,proAddress=?,proFax=?,modifyBy=?,modifyDate=? where id = ? ";
             Object[] params = {provider.getProName(), provider.getProDesc(), provider.getProContact(),
                     provider.getProPhone(), provider.getProAddress(), provider.getProFax(),
                     provider.getModifyBy(), provider.getModifyDate(), provider.getId()};
-            count = BaseDao.execute(connection, preparedStatement, sql, params);
-            BaseDao.closeResources(null, preparedStatement, null);
+            count = BaseDao.execute(connection, null, sql, params);
+            BaseDao.closeResources(null, null, null);
         }
         return count;
     }

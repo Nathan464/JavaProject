@@ -27,9 +27,9 @@ import java.util.Map;
 
 public class BillServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         String method = req.getParameter("method");
-        if (method!=null){
+        if (method != null) {
             switch (method) {
                 case "query":
                     try {
@@ -85,18 +85,18 @@ public class BillServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         doGet(req, resp);
     }
 
-    public void getProviderListServlet(HttpServletRequest request, HttpServletResponse response) throws SQLException{
+    public void getProviderListServlet(HttpServletRequest request, HttpServletResponse response) throws SQLException {
         ProviderService providerService = new ProviderServiceImp();
-        List<Provider> providerList = providerService.getProviderList(null,null,
-                null,null);
+        List<Provider> providerList = providerService.getProviderList(null, null,
+                null, null);
         try {
-            request.getSession().setAttribute("providerLit",providerList);
-            request.getRequestDispatcher("billadd.jsp").forward(request,response);
-        }catch (ServletException|IOException exception){
+            request.getSession().setAttribute("providerLit", providerList);
+            request.getRequestDispatcher("billadd.jsp").forward(request, response);
+        } catch (ServletException | IOException exception) {
             exception.printStackTrace();
         }
     }
@@ -132,7 +132,7 @@ public class BillServlet extends HttpServlet {
             try {
                 request.setAttribute(Constant.MESSAGE, "Fail");
                 request.getRequestDispatcher("billadd.jsp").forward(request, response);
-            } catch (ServletException | IOException exception){
+            } catch (ServletException | IOException exception) {
                 exception.printStackTrace();
             }
         }
@@ -275,9 +275,9 @@ public class BillServlet extends HttpServlet {
 
         billList = billService.getBillListByCondition(queryProductName, isPayment, providerId,
                 currentPageNo, pageSize);
-        for (Bill bill:billList){
-            for (Provider provider:providerList){
-                if (provider.getId().equals(bill.getProviderId())){
+        for (Bill bill : billList) {
+            for (Provider provider : providerList) {
+                if (provider.getId().equals(bill.getProviderId())) {
                     bill.setProviderName(provider.getProName());
                 }
             }
