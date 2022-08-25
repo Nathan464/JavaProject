@@ -1,2 +1,2 @@
-# JavaProject
-## Include Java/JavaScript/CSS/HTML
+# JavaProject - Supermarket Management System
+## Java/JavaScript/CSS/HTML
