@@ -9,7 +9,6 @@ public class BaseDao {
     private static final String url;
 
     static {
-//
         driver = "com.mysql.cj.jdbc.Driver";
         url = "jdbc:mysql://localhost:3306/smbms?useSSL=true&useUnicode=true&characterEncoding=UTF-8";
         username = "root";
